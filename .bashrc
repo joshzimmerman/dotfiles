@@ -61,9 +61,6 @@ alias python='rlwrap python'
 # Rarely do I want to overwrite with these commands; confirmation is useful.
 alias mv='mv -i'
 alias cp='cp -i'
-
-# Less intrusive than -i, still will hopefully catch dumb mistakes.
-alias rm='rm -I'
 # ==============================================================================
 
 # ==============================================================================
@@ -72,6 +69,9 @@ if [[ `uname` = "Darwin" ]]
 then
   # Mac OS doesn't support --color flag for ls, needs -G instead.
   alias ls='ls -G'
+
+  # Grumble, why does OS X's rm not support -I?
+  alias rm='rm -i'
 
   alias vim='mvim -p'
   alias objdump='gobjdump'
@@ -82,6 +82,9 @@ else
   alias ls='ls --color=auto'
   alias vim='vim -p'
   export EDITOR='vim'
+
+  # Less intrusive than -i, still will hopefully catch dumb mistakes.
+  alias rm='rm -I'
 fi
 # ==============================================================================
 
