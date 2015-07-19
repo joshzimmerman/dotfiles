@@ -71,7 +71,32 @@ then
   alias ls='ls -G'
 
   # Grumble, why does OS X's rm not support -I?
-  alias rm='rm -i'
+  function rm () {
+    OPTIND=1
+    OPTERR=0
+    recursive=0
+    while getopts "r" opt; do
+      case "$opt" in
+        r)  recursive=1
+          ;;
+        *) ;;
+      esac
+    done
+
+    if [ $# -gt 3 ]; then
+      read -p "rm: remove all arguments? " a
+      if [ "$a" = "y" ] || [ "$a" == "Y" ]; then
+        /bin/rm $@
+      fi
+    elif [ $recursive -eq 1 ]; then
+      read -p "rm: remove all arguments recursively? " a
+      if [ "$a" = "y" ] || [ "$a" == "Y" ]; then
+        /bin/rm $@
+      fi
+    else
+      /bin/rm $@
+    fi
+  }
 
   alias vim='mvim -p'
   alias objdump='gobjdump'
