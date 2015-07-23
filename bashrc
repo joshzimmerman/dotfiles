@@ -75,26 +75,29 @@ then
     OPTIND=1
     OPTERR=0
     recursive=0
-    while getopts "r" opt; do
+    force=0
+    while getopts "rf" opt; do
       case "$opt" in
         r)  recursive=1
+          ;;
+        f)  force=1
           ;;
         *) ;;
       esac
     done
 
-    if [ $# -gt 3 ]; then
+    if [ $# -gt 3 ] && [ $force -eq 0 ]; then
       read -p "rm: remove all arguments? " a
       if [ "$a" = "y" ] || [ "$a" == "Y" ]; then
-        /bin/rm $@
+        /bin/rm "$@"
       fi
-    elif [ $recursive -eq 1 ]; then
+    elif [ $recursive -eq 1 ] && [ $force -eq 0 ]; then
       read -p "rm: remove all arguments recursively? " a
       if [ "$a" = "y" ] || [ "$a" == "Y" ]; then
-        /bin/rm $@
+        /bin/rm "$@"
       fi
     else
-      /bin/rm $@
+      /bin/rm "$@"
     fi
   }
 
