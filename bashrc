@@ -67,6 +67,10 @@ alias cp='cp -i'
 # Some things differ between Mac OS and Linux configurations.
 if [[ `uname` = "Darwin" ]]
 then
+  # Stop OS X from using the GUI dialog box (which disallows pasting) for SSH
+  # passphrases
+  export SSH_AUTH_SOCK=''
+
   # Mac OS doesn't support --color flag for ls, needs -G instead.
   alias ls='ls -G'
 
