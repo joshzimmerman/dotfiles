@@ -69,7 +69,7 @@ if [[ `uname` = "Darwin" ]]
 then
   # Stop OS X from using the GUI dialog box (which disallows pasting) for SSH
   # passphrases
-  export SSH_AUTH_SOCK=''
+  alias ssh_gce="SSH_AUTH_SOCK='' ssh gce"
 
   # Mac OS doesn't support --color flag for ls, needs -G instead.
   alias ls='ls -G'
