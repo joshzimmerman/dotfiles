@@ -69,7 +69,7 @@ if [[ `uname` = "Darwin" ]]
 then
   # Stop OS X from using the GUI dialog box (which disallows pasting) for SSH
   # passphrases
-  alias ssh_gce="SSH_AUTH_SOCK='' ssh gce"
+  alias nosock="SSH_AUTH_SOCK=''"
 
   # Mac OS doesn't support --color flag for ls, needs -G instead.
   alias ls='ls -G'
@@ -133,15 +133,15 @@ bind "set completion-ignore-case on"
 # PS1 setup
 
 # Color Variables
-BOLD=$(tput bold)
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-BLUE=$(tput setaf 4)
-PURPLE=$(tput setaf 5)
-CYAN=$(tput setaf 6)
-WHITE=$(tput setaf 7)
-RESET=$(tput sgr0)
+BOLD="\[$(tput bold)\]"
+RED="\[$(tput setaf 1)\]"
+GREEN="\[$(tput setaf 2)\]"
+YELLOW="\[$(tput setaf 3)\]"
+BLUE="\[$(tput setaf 4)\]"
+PURPLE="\[$(tput setaf 5)\]"
+CYAN="\[$(tput setaf 6)\]"
+WHITE="\[$(tput setaf 7)\]"
+RESET="\[$(tput sgr0)\]"
 
 PS1_USER_HOST="\u@\h"
 PS1_DATE="(\t)"
