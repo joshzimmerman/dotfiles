@@ -133,15 +133,23 @@ bind "set completion-ignore-case on"
 # PS1 setup
 
 # Color Variables
-BOLD="\[$(tput bold)\]"
-RED="\[$(tput setaf 1)\]"
-GREEN="\[$(tput setaf 2)\]"
-YELLOW="\[$(tput setaf 3)\]"
-BLUE="\[$(tput setaf 4)\]"
-PURPLE="\[$(tput setaf 5)\]"
-CYAN="\[$(tput setaf 6)\]"
-WHITE="\[$(tput setaf 7)\]"
-RESET="\[$(tput sgr0)\]"
+BOLD=$(tput bold)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+PURPLE=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+WHITE=$(tput setaf 7)
+RESET=$(tput sgr0)
+
+function ps1ify () {
+  echo "\[$1\]"
+}
+PS1_BOLD=$(ps1ify $BOLD)
+PS1_GREEN=$(ps1ify $GREEN)
+PS1_BLUE=$(ps1ify $BLUE)
+PS1_RESET=$(ps1ify $RESET)
 
 PS1_USER_HOST="\u@\h"
 PS1_DATE="(\t)"
@@ -151,7 +159,8 @@ PS1_CHROOT="${debian_chroot:+($debian_chroot)}"
 export PS1="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
 # Add chroot indicator, if relevant
 export PS1="$PS1$PS1_CHROOT"
-export PS1="$PS1 $BOLD$GREEN$PS1_USER_HOST$RESET:$BOLD$BLUE$PS1_PWD$RESET\$ "
+PS1_PRE_COLON=$PS1_BOLD$PS1_GREEN$PS1_USER_HOST$PS1_RESET
+export PS1="$PS1 $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
 # add elapsed time to PS1
 
 function timer_start {
