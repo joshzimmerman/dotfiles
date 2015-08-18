@@ -67,6 +67,10 @@ alias cp='cp -i'
 # Some things differ between Mac OS and Linux configurations.
 if [[ `uname` = "Darwin" ]]
 then
+  # Stop OS X from using the GUI dialog box (which disallows pasting) for SSH
+  # passphrases
+  alias nosock="SSH_AUTH_SOCK=''"
+
   # Mac OS doesn't support --color flag for ls, needs -G instead.
   alias ls='ls -G'
 
@@ -140,6 +144,14 @@ CYAN=$(tput setaf 6)
 WHITE=$(tput setaf 7)
 RESET=$(tput sgr0)
 
+function ps1ify () {
+  echo "\[$1\]"
+}
+PS1_BOLD=$(ps1ify $BOLD)
+PS1_GREEN=$(ps1ify $GREEN)
+PS1_BLUE=$(ps1ify $BLUE)
+PS1_RESET=$(ps1ify $RESET)
+
 PS1_USER_HOST="\u@\h"
 PS1_DATE="(\t)"
 PS1_PWD="\w"
@@ -148,7 +160,8 @@ PS1_CHROOT="${debian_chroot:+($debian_chroot)}"
 export PS1="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
 # Add chroot indicator, if relevant
 export PS1="$PS1$PS1_CHROOT"
-export PS1="$PS1 $BOLD$GREEN$PS1_USER_HOST$RESET:$BOLD$BLUE$PS1_PWD$RESET\$ "
+PS1_PRE_COLON=$PS1_BOLD$PS1_GREEN$PS1_USER_HOST$PS1_RESET
+export PS1="$PS1 $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
 # add elapsed time to PS1
 
 function timer_start {

@@ -1,0 +1,39 @@
+###############################################################################
+#    Screen common profile
+#      This configuration profile is intended to be a common header of useful
+#      functionality, included by other profiles.
+#
+#    Copyright (C) 2008 Canonical Ltd.
+#
+#    Authors: Dustin Kirkland <kirkland@canonical.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+###############################################################################
+
+# Now, let's override with our customizations
+startup_message off
+vbell off
+msgwait 1
+
+# Turns off alternate screen switching in xterms,
+# so that text in screen will go into the xterm's scrollback buffer:
+termcapinfo xterm* ti@:te@
+altscreen on
+
+# Log 10000 lines
+defscrollback 10000
+
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{= kw}%?%-Lw%?%{r}(%{W}%n* %f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %D %m/%d/%y %C %A %{W}%{g}]'
+
+
