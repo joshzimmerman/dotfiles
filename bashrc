@@ -148,6 +148,7 @@ function ps1ify () {
   echo "\[$1\]"
 }
 PS1_BOLD=$(ps1ify $BOLD)
+PS1_RED=$(ps1ify $RED)
 PS1_GREEN=$(ps1ify $GREEN)
 PS1_BLUE=$(ps1ify $BLUE)
 PS1_RESET=$(ps1ify $RESET)
@@ -157,11 +158,11 @@ PS1_DATE="(\t)"
 PS1_PWD="\w"
 PS1_CHROOT="${debian_chroot:+($debian_chroot)}"
 # Set term window title
-export PS1="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
+export PS1_BASE="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
 # Add chroot indicator, if relevant
-export PS1="$PS1$PS1_CHROOT"
+export PS1="$PS1_BASE$PS1_CHROOT"
 PS1_PRE_COLON=$PS1_BOLD$PS1_GREEN$PS1_USER_HOST$PS1_RESET
-export PS1="$PS1 $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
+export PS1_BASE="$PS1_BASE $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
 # add elapsed time to PS1
 
 function timer_start {
@@ -178,17 +179,21 @@ function convertsecs() {
 }
 
 trap 'timer_start' DEBUG
-PROMPT_COMMAND=timer_stop
 # Add elapsed time
-export PS1="(\$(convertsecs \${timer_show})) $PS1"
+export PS1_BASE="(\$(convertsecs \${timer_show})) $PS1_BASE"
 
 # Add an indicator of an error code to the PS1
 function error_code() {
   if [[ $1 != 0 ]]; then
-    echo -n "$BOLD$RED($1)$RESET "
+    echo -n "$PS1_BOLD$PS1_RED($1)$PS1_RESET "
   fi
 }
-export PS1="\$(error_code \$?)$PS1"
+
+function finalize_ps1() {
+  PS1=$(error_code $?)$PS1_BASE
+}
+PROMPT_COMMAND=finalize_ps1;timer_stop
+
 # ==============================================================================
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
