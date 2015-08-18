@@ -108,7 +108,8 @@ then
   export PATH=$PATH:/usr/local/texlive/2010/bin/x86_64-darwin:
 else
   alias ls='ls --color=auto'
-  alias vim='vim -p'
+  alias vim='gvim -p'
+  alias ack='ack-grep'
   export EDITOR='vim'
 
   # Less intrusive than -i, still will hopefully catch dumb mistakes.
@@ -194,3 +195,14 @@ fi
 alias prodaccess='prodaccess --corp_ssh'
 alias p='prodaccess --corp_ssh'
 export P4DIFF='gvimdiff -f'
+
+git() {
+  if [[ $1 == 'merge' ]]; then
+    echo 'Use git5 merge, not git merge.  git merge does not understand how to
+merge the READONLY link and it can corrupt your branch, so stay away from it.'
+    #  type "unset -f git" to remove this warning'
+  else
+    command git "$@"
+  fi
+}
+
