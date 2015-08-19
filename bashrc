@@ -179,8 +179,6 @@ function convertsecs() {
 }
 
 trap 'timer_start' DEBUG
-# Add elapsed time
-export PS1_BASE="(\$(convertsecs \${timer_show})) $PS1_BASE"
 
 # Add an indicator of an error code to the PS1
 function error_code() {
@@ -190,9 +188,12 @@ function error_code() {
 }
 
 function finalize_ps1() {
-  PS1=$(error_code $?)$PS1_BASE
+  status=$?
+  timer_stop
+  # Add elapsed time and error code
+  PS1="$(error_code $status)($(convertsecs $timer_show)) $PS1_BASE"
 }
-PROMPT_COMMAND=finalize_ps1;timer_stop
+PROMPT_COMMAND=finalize_ps1
 
 # ==============================================================================
 # Add an "alert" alias for long running commands.  Use like so:
