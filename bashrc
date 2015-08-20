@@ -112,7 +112,8 @@ then
   export PATH=$PATH:/usr/local/texlive/2010/bin/x86_64-darwin:
 else
   alias ls='ls --color=auto'
-  alias vim='vim -p'
+  alias vim='gvim -p'
+  alias ack='ack-grep'
   export EDITOR='vim'
 
   # Less intrusive than -i, still will hopefully catch dumb mistakes.
@@ -147,6 +148,7 @@ function ps1ify () {
   echo "\[$1\]"
 }
 PS1_BOLD=$(ps1ify $BOLD)
+PS1_RED=$(ps1ify $RED)
 PS1_GREEN=$(ps1ify $GREEN)
 PS1_BLUE=$(ps1ify $BLUE)
 PS1_RESET=$(ps1ify $RESET)
@@ -156,11 +158,11 @@ PS1_DATE="(\t)"
 PS1_PWD="\w"
 PS1_CHROOT="${debian_chroot:+($debian_chroot)}"
 # Set term window title
-export PS1="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
+export PS1_BASE="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
 # Add chroot indicator, if relevant
-export PS1="$PS1$PS1_CHROOT"
+export PS1="$PS1_BASE$PS1_CHROOT"
 PS1_PRE_COLON=$PS1_BOLD$PS1_GREEN$PS1_USER_HOST$PS1_RESET
-export PS1="$PS1 $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
+export PS1_BASE="$PS1_BASE $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
 # add elapsed time to PS1
 
 function timer_start {
@@ -177,15 +179,38 @@ function convertsecs() {
 }
 
 trap 'timer_start' DEBUG
-PROMPT_COMMAND=timer_stop
-# Add elapsed time
-export PS1="(\$(convertsecs \${timer_show})) $PS1"
 
 # Add an indicator of an error code to the PS1
 function error_code() {
   if [[ $1 != 0 ]]; then
-    echo -n "$BOLD$RED($1)$RESET "
+    echo -n "$PS1_BOLD$PS1_RED($1)$PS1_RESET "
   fi
 }
-export PS1="\$(error_code \$?)$PS1"
+
+function finalize_ps1() {
+  status=$?
+  timer_stop
+  # Add elapsed time and error code
+  PS1="$(error_code $status)($(convertsecs $timer_show)) $PS1_BASE"
+}
+PROMPT_COMMAND=finalize_ps1
+
 # ==============================================================================
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+if [ -e ~/dotfiles/goog_bashrc.bash ]; then
+  source ~/dotfiles/goog_bashrc.bash
+fi
