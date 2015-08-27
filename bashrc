@@ -158,11 +158,11 @@ PS1_DATE="(\t)"
 PS1_PWD="\w"
 PS1_CHROOT="${debian_chroot:+($debian_chroot)}"
 # Set term window title
-export PS1_BASE="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
+PS1_BASE="$PS1_DATE\[\e]0;$PS1_USER_HOST:$PS1_PWD\a\]"
 # Add chroot indicator, if relevant
-export PS1="$PS1_BASE$PS1_CHROOT"
+PS1_BASE="$PS1_BASE$PS1_CHROOT"
 PS1_PRE_COLON=$PS1_BOLD$PS1_GREEN$PS1_USER_HOST$PS1_RESET
-export PS1_BASE="$PS1_BASE $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
+PS1_BASE="$PS1_BASE $PS1_PRE_COLON:$PS1_BOLD$PS1_BLUE$PS1_PWD$PS1_RESET\$ "
 # add elapsed time to PS1
 
 function timer_start {
