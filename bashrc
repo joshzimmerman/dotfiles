@@ -5,7 +5,7 @@
 set -o vi
 
 # Make .bash_history store more and not store duplicates
-export HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoredups
 export HISTSIZE=500000
 export HISTFILESIZE=500000
 
@@ -112,7 +112,7 @@ then
   export PATH=$PATH:/usr/local/texlive/2010/bin/x86_64-darwin:
 else
   alias ls='ls --color=auto'
-  alias vim='gvim -p'
+  alias vim='vim -p'
   alias ack='ack-grep'
   export EDITOR='vim'
 
@@ -214,3 +214,8 @@ fi
 if [ -e ~/dotfiles/goog_bashrc.bash ]; then
   source ~/dotfiles/goog_bashrc.bash
 fi
+
+alias kvim='vim -u ~/.vimrc_kernel'
+
+alias readelf='readelf -W'
+alias objdump='objdump -w'
