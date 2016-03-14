@@ -219,3 +219,11 @@ alias kvim='vim -u ~/.vimrc_kernel'
 
 alias readelf='readelf -W'
 alias objdump='objdump -w'
+
+completescreen () {
+  cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$(screen -ls | grep tached | cut -d. -f2 | cut -f1 | tr '\n' ' ')" -- $cur) )
+}
+
+complete -F completescreen screen
+
