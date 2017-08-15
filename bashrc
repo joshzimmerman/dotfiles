@@ -105,14 +105,15 @@ then
     fi
   }
 
-  alias vim='mvim -p'
+  alias vim='vim -p'
   alias objdump='gobjdump'
-  export EDITOR='mvim -f'
+  export EDITOR='vim -f'
 
   export PATH=$PATH:/usr/local/texlive/2010/bin/x86_64-darwin:
+
 else
   alias ls='ls --color=auto'
-  alias vim='gvim -p'
+  alias vim='vim -p'
   alias ack='ack-grep'
   export EDITOR='vim'
 
