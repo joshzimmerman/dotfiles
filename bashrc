@@ -28,7 +28,7 @@ export PATH=$PATH:~/scripts
 # ==============================================================================
 # helpful aliases and functions
 alias grep='grep --color=auto'
-alias irc="nosock mosh -p 8005 --ssh='ssh -p 421' -- gce screen -dr"
+alias irc="mosh -p 8005 -- gce screen -dr irc"
 
 alias ed='ed -p "ed> "'
 
