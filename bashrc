@@ -21,14 +21,14 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # ==============================================================================
-export PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=~/.cargo/bin:~/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export PATH=$PATH:~/scripts
 # ==============================================================================
 
 # ==============================================================================
 # helpful aliases and functions
 alias grep='grep --color=auto'
-alias irc="mosh -p 8005 -- gce screen -dr irc"
+alias irc="mosh -- joshz screen -dR irc"
 
 alias ed='ed -p "ed> "'
 
@@ -54,9 +54,6 @@ function mkcd() {
 # always under a limit for line length. On some systems, this is wc -L, but not
 # all support that.
 alias wcL="awk ' { if ( length > x ) { x = length } }END{ print x }'"
-
-# Arrow keys are nice
-alias python='rlwrap python'
 
 # Rarely do I want to overwrite with these commands; confirmation is useful.
 alias mv='mv -i'
