@@ -5,7 +5,7 @@
 set -o vi
 
 # Make .bash_history store more and not store duplicates
-export HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoredups
 export HISTSIZE=500000
 export HISTFILESIZE=500000
 
@@ -212,3 +212,16 @@ fi
 if [ -e ~/dotfiles/goog_bashrc.bash ]; then
   source ~/dotfiles/goog_bashrc.bash
 fi
+
+alias kvim='vim -u ~/.vimrc_kernel'
+
+alias readelf='readelf -W'
+alias objdump='objdump -w'
+
+completescreen () {
+  cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$(screen -ls | grep tached | cut -d. -f2 | cut -f1 | tr '\n' ' ')" -- $cur) )
+}
+
+complete -F completescreen screen
+
